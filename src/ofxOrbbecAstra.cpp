@@ -56,9 +56,9 @@ void ofxOrbbecAstra::enableRegistration(bool useRegistration) {
 	reader.stream<astra::DepthStream>().enable_registration(useRegistration);
 }
 
-void ofxOrbbecAstra::setDepthClipping(unsigned short near, unsigned short far) {
-	nearClip = near;
-	farClip = far;
+void ofxOrbbecAstra::setDepthClipping(unsigned short nearClip, unsigned short farClip) {
+	nearClip = nearClip;
+	farClip = farClip;
 	updateDepthLookupTable();
 }
 
@@ -121,7 +121,7 @@ void ofxOrbbecAstra::initVideoGrabber(int deviceID) {
 
 	grabber = make_shared<ofVideoGrabber>();
 	grabber->setDeviceID(deviceID);
-	grabber->setup(width, height);
+	grabber->initGrabber(width, height);
 }
 
 void ofxOrbbecAstra::update(){
@@ -132,7 +132,7 @@ void ofxOrbbecAstra::update(){
 	if (bUseVideoGrabber && grabber) {
 		grabber->update();
 		if (grabber->isFrameNew()) {
-			colorImage.setFromPixels(grabber->getPixels());
+			colorImage.setFromPixels(grabber->getPixelsRef());
 			colorImage.mirror(false, true);
 			colorImage.update();
 		}
@@ -166,12 +166,12 @@ void ofxOrbbecAstra::on_frame_ready(astra::StreamReader& reader,
 	auto handFrame = frame.get<astra::HandFrame>();
 
 	if (colorFrame.is_valid()) {
-		colorFrame.copy_to((astra::RgbPixel*) colorImage.getPixels().getData());
+		colorFrame.copy_to((astra::RgbPixel*) colorImage.getPixels());
 		colorImage.update();
 	}
 
 	if (depthFrame.is_valid()) {
-		depthFrame.copy_to((short*) depthPixels.getData());
+		depthFrame.copy_to((short*) depthPixels.getPixels());
 
 		if (bDepthImageEnabled) {
 			// TODO do this with a shader so it's fast?

@@ -8,8 +8,12 @@
 
 #pragma once
 
+#include <unordered_map>
+
 #include "ofMain.h"
 #include <astra/astra.hpp>
+
+using namespace std;
 
 class ofxOrbbecAstra : public astra::FrameListener {
 
@@ -25,7 +29,7 @@ public:
     
 	void enableDepthImage(bool enable);
 	void enableRegistration(bool useRegistration);
-	void setDepthClipping(unsigned short near, unsigned short far);
+	void setDepthClipping(unsigned short nearClip, unsigned short farClip);
 
 	void initColorStream();
 	void initDepthStream();
