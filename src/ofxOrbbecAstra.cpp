@@ -20,7 +20,7 @@ ofxOrbbecAstra::ofxOrbbecAstra() {
 }
 
 ofxOrbbecAstra::~ofxOrbbecAstra() {
-	astra::terminate();
+	close();
 }
 
 void ofxOrbbecAstra::setup() {
@@ -155,6 +155,10 @@ bool ofxOrbbecAstra::isFrameNew() {
 	return bIsFrameNew;
 }
 
+void ofxOrbbecAstra::close() {
+	astra::terminate();
+}
+
 void ofxOrbbecAstra::on_frame_ready(astra::StreamReader& reader,
 									astra::Frame& frame)
 {
@@ -249,10 +253,18 @@ ofImage& ofxOrbbecAstra::getColorImage() {
 	return colorImage;
 }
 
+unsigned char* ofxOrbbecAstra::getPixels() {
+	return colorImage.getPixels();
+}
+
 unordered_map<int32_t,ofVec2f>& ofxOrbbecAstra::getHandsDepth() {
 	return handMapDepth;
 }
 
 unordered_map<int32_t,ofVec3f>& ofxOrbbecAstra::getHandsWorld() {
 	return handMapWorld;
+}
+
+int ofxOrbbecAstra::numAvailableDevices() {
+	return 1;
 }

@@ -15,7 +15,7 @@
 
 using namespace std;
 
-class ofxOrbbecAstra : public astra::FrameListener {
+class ofxOrbbecAstra : public astra::FrameListener, public ofBaseVideo {
 
 public:
 
@@ -39,6 +39,7 @@ public:
 
 	void update();
 	bool isFrameNew();
+	void close();
 
 	void draw(float x = 0, float y = 0, float w = 0, float h = 0);
 	void drawDepth(float x = 0, float y = 0, float w = 0, float h = 0);
@@ -52,8 +53,12 @@ public:
 	ofImage& getDepthImage();
 	ofImage& getColorImage();
 
+	unsigned char* getPixels();
+
 	unordered_map<int32_t,ofVec2f>& getHandsDepth();
 	unordered_map<int32_t,ofVec3f>& getHandsWorld();
+
+	static int numAvailableDevices();
 
 protected:
 
